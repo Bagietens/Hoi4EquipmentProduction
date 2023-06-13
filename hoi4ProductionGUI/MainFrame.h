@@ -16,6 +16,11 @@ private:
 	void UseDataFromInputs();
 
 	wxPanel* panel;
+	wxStaticText* firstlineTextProcentage;
+	wxStaticText* secondlineTextProcentage;
+	wxStaticText* thirdlineTextProcentage;
+	wxStaticText* forthlineTextProcentage;
+	
 	wxStaticText* headlineText;
 	wxStaticText* firstlineText;
 	wxStaticText* secondlineText;

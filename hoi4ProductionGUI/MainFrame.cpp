@@ -34,20 +34,30 @@ void MainFrame::CreateControls()
 		wxPoint(0, 22), wxSize(600, -1), wxALIGN_CENTER_HORIZONTAL);
 	headlineText->SetFont(headlineFont);
 
-	factoryCount = new wxSpinCtrl(panel, wxID_ANY, "", wxPoint(80, 80), wxSize(60, 30));
-	prodCap = new wxTextCtrl(panel, wxID_ANY, "", wxPoint(480, 80), wxSize(60, 30));
+	factoryCount = new wxSpinCtrl(panel, wxID_ANY, "", wxPoint(80, 80), wxSize(60, -1));
+	prodCap = new wxTextCtrl(panel, wxID_ANY, "", wxPoint(480, 80), wxSize(60, -1));
 	firstlineText = new  wxStaticText(panel, wxID_ANY, "Amount of Factories        Production Cap", wxPoint(180, 80), wxSize(300, -1));
+	firstlineTextProcentage = new wxStaticText(panel, wxID_ANY," %", wxPoint(550,80), wxSize(300,-1));
+	
+	
+	
 
-	cost = new wxTextCtrl(panel, wxID_ANY, "", wxPoint(80, 150), wxSize(60, 30));
-	prodBase = new wxTextCtrl(panel, wxID_ANY, "", wxPoint(480, 150), wxSize(60, 30));
+	cost = new wxTextCtrl(panel, wxID_ANY, "", wxPoint(80, 150), wxSize(60, -1));
+	prodBase = new wxTextCtrl(panel, wxID_ANY, "", wxPoint(480, 150), wxSize(60, -1));
 	secondlineText = new  wxStaticText(panel, wxID_ANY, "Cost                                Production Base", wxPoint(180, 150), wxSize(300, -1));
+	secondlineTextProcentage = new wxStaticText(panel, wxID_ANY, " %", wxPoint(550, 150), wxSize(300, -1));
 
-	requested = new wxTextCtrl(panel, wxID_ANY, "", wxPoint(80, 220), wxSize(60, 30));
-	factoryOutput = new wxTextCtrl(panel, wxID_ANY, "", wxPoint(480, 220), wxSize(60, 30));
+
+	requested = new wxTextCtrl(panel, wxID_ANY, "", wxPoint(80, 220), wxSize(60, -1));
+	factoryOutput = new wxTextCtrl(panel, wxID_ANY, "", wxPoint(480, 220), wxSize(60, -1));
 	thirdlineText = new  wxStaticText(panel, wxID_ANY, "Requested Amount            Factory Output", wxPoint(180, 220), wxSize(300, -1));
+	thirdlineTextProcentage = new wxStaticText(panel, wxID_ANY," %", wxPoint(550,220), wxSize(300,-1));
 
-	prodGrowth = new wxTextCtrl(panel, wxID_ANY, "", wxPoint(480, 290), wxSize(60, 30));
+
+	prodGrowth = new wxTextCtrl(panel, wxID_ANY, "", wxPoint(480, 290), wxSize(60, -1));
 	forthlineText = new  wxStaticText(panel, wxID_ANY, "                                 Production Growth", wxPoint(180, 290), wxSize(300, -1));
+	forthlineTextProcentage = new wxStaticText(panel, wxID_ANY," %", wxPoint(550,290), wxSize(300,-1));
+
 
 	calculateButton = new wxButton(panel, wxID_ANY, "Calculate", wxPoint(80, 300), wxSize(100, 25));
 	
@@ -75,10 +85,10 @@ void MainFrame::UseDataFromInputs()
 		return;
 	}
 	float production = 0;
-	float f_output = wxAtof(factoryOutputString);
-	float prod_eff = wxAtof(prodBaseString);
-	float prod_cap = wxAtof(prodCapString);
-	float prod_growth = wxAtof(prodGrowthString);
+	float f_output = wxAtof(factoryOutputString)/100;
+	float prod_eff = wxAtof(prodBaseString) / 100;
+	float prod_cap = wxAtof(prodCapString) / 100;
+	float prod_growth = wxAtof(prodGrowthString) / 100;
 	float cost = wxAtof(costString);
 	float used_ic = cost;
 	int requested = wxAtoi(requestedString);

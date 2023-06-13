@@ -13,6 +13,8 @@ private:
 
 	void OnCalculateButtonClicked(wxCommandEvent& evt);
 
+	void OnExitButtonClicked(wxCloseEvent& evt);
+
 	void UseDataFromInputs();
 
 	wxPanel* panel;

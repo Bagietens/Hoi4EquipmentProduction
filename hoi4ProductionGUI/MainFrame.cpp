@@ -19,6 +19,7 @@ MainFrame::MainFrame(const wxString& title) : wxFrame(nullptr, wxID_ANY, title) 
 void MainFrame::BindEventHandlers()
 {
 	calculateButton->Bind(wxEVT_BUTTON, &MainFrame::OnCalculateButtonClicked, this);
+	this->Bind(wxEVT_CLOSE_WINDOW, &MainFrame::OnExitButtonClicked, this);
 }
 
 void MainFrame::CreateControls()
@@ -69,6 +70,14 @@ void MainFrame::OnCalculateButtonClicked(wxCommandEvent& evt)
 	UseDataFromInputs();
 }
 
+void MainFrame::OnExitButtonClicked(wxCloseEvent& evt)
+{
+	int answer = wxMessageBox("Do you want to quit the program?","Confirm", wxYES_NO);
+	if (answer == wxYES) {
+		evt.Skip();
+	}
+}
+
 void MainFrame::UseDataFromInputs()
 {
 
@@ -85,7 +94,7 @@ void MainFrame::UseDataFromInputs()
 		return;
 	}
 	float production = 0;
-	float f_output = wxAtof(factoryOutputString)/100;
+	float f_output = wxAtof(factoryOutputString) / 100;
 	float prod_eff = wxAtof(prodBaseString) / 100;
 	float prod_cap = wxAtof(prodCapString) / 100;
 	float prod_growth = wxAtof(prodGrowthString) / 100;
@@ -102,7 +111,7 @@ void MainFrame::UseDataFromInputs()
 		produced = produced + (production / cost);
 	} while (produced<requested_f);
 	unsigned long daysTest = 0;
-	prod_eff = wxAtof(prodBaseString);
+	prod_eff = wxAtof(prodBaseString) / 100;
 	produced = 0;
 	do {
 		daysTest++;

@@ -74,7 +74,7 @@ void MainFrame::UseDataFromInputs()
 		factoryOutputString.IsEmpty() || prodGrowthString.IsEmpty()) {
 		return;
 	}
-	float production;
+	float production = 0;
 	float f_output = wxAtof(factoryOutputString);
 	float prod_eff = wxAtof(prodBaseString);
 	float prod_cap = wxAtof(prodCapString);
@@ -84,14 +84,14 @@ void MainFrame::UseDataFromInputs()
 	int requested = wxAtoi(requestedString);
 	float requested_f = (float)requested;
     float produced = 0;
-	unsigned long days = 1;
+	unsigned long days = 0;
 	do {
 		days++;
 		production = 4.5 * factories * (1 + f_output) * prod_eff;
 		prod_eff = prod_eff + eff_growth(prod_eff, prod_cap, prod_growth);
 		produced = produced + (production / cost);
 	} while (produced<requested_f);
-	unsigned long daysTest = 1;
+	unsigned long daysTest = 0;
 	prod_eff = wxAtof(prodBaseString);
 	produced = 0;
 	do {
@@ -100,5 +100,5 @@ void MainFrame::UseDataFromInputs()
 		//prod_eff = prod_eff + eff_growth(prod_eff, prod_cap, prod_growth);
 		produced = produced + (production / cost);
 	} while (produced < requested_f);
-	wxLogStatus("Days : %d. Will show %d", days, daysTest);
+	wxLogStatus("Days : %d. Will show %d in logistics tab", days, daysTest);
 }

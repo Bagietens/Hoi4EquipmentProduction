@@ -15,6 +15,8 @@ private:
 
 	void OnExitButtonClicked(wxCloseEvent& evt);
 
+	void OnTextChangedEfficiency(wxCommandEvent& evt);
+
 	void UseDataFromInputs();
 
 	wxPanel* panel;
@@ -28,6 +30,8 @@ private:
 	wxStaticText* secondlineText;
 	wxStaticText* thirdlineText;
 	wxStaticText* forthlineText;
+	wxStaticText* TimeToProdCapText;
+
 	wxSpinCtrl* factoryCount;
 	wxTextCtrl* cost;
 	wxTextCtrl* prodCap;

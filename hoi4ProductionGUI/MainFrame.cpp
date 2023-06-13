@@ -20,12 +20,16 @@ void MainFrame::BindEventHandlers()
 {
 	calculateButton->Bind(wxEVT_BUTTON, &MainFrame::OnCalculateButtonClicked, this);
 	this->Bind(wxEVT_CLOSE_WINDOW, &MainFrame::OnExitButtonClicked, this);
+	prodBase->Bind(wxEVT_TEXT, &MainFrame::OnTextChangedEfficiency, this);
+	prodCap->Bind(wxEVT_TEXT, &MainFrame::OnTextChangedEfficiency, this);
+	prodGrowth->Bind(wxEVT_TEXT, &MainFrame::OnTextChangedEfficiency, this);
 }
 
 void MainFrame::CreateControls()
 {
 	wxFont headlineFont(wxFontInfo(wxSize(0, 34)).Bold());
 	wxFont mainFont(wxFontInfo(wxSize(0, 15)));
+	wxFont supportFont(wxFontInfo(wxSize(0, 15)).Bold());
 
 	panel = new wxPanel(this);
 
@@ -62,12 +66,37 @@ void MainFrame::CreateControls()
 
 	calculateButton = new wxButton(panel, wxID_ANY, "Calculate", wxPoint(80, 300), wxSize(100, 25));
 	
-
+	TimeToProdCapText = new wxStaticText(panel, wxID_ANY, "Time for Maximum Efficiency : ", wxPoint(280, 330), wxSize(300, -1), wxBOLD);
+	TimeToProdCapText->SetFont(supportFont);
 }
 
 void MainFrame::OnCalculateButtonClicked(wxCommandEvent& evt)
 {
 	UseDataFromInputs();
+}
+
+void MainFrame::OnTextChangedEfficiency(wxCommandEvent& evt)
+{
+	wxString prodCapString = prodCap->GetValue();
+	wxString prodBaseString = prodBase->GetValue();
+	wxString prodGrowthString = prodGrowth->GetValue();
+	if (prodCapString.IsEmpty() || prodBaseString.IsEmpty()) {
+		return;
+	}
+	else if (prodGrowthString.IsEmpty()) {
+		prodGrowthString = '0';
+	}
+	float prod_eff = wxAtof(prodBaseString) / 100;
+	float prod_cap = wxAtof(prodCapString) / 100;
+	float prod_growth = wxAtof(prodGrowthString) / 100;
+	unsigned long days = 0;
+	do {
+		days++;
+		prod_eff = prod_eff + eff_growth(prod_eff, prod_cap, prod_growth);
+	} while (prod_eff < prod_cap);
+	wxString text = "Time for Maximum Efficiency : ";
+	text << days << " days";
+	TimeToProdCapText->SetLabel(text);
 }
 
 void MainFrame::OnExitButtonClicked(wxCloseEvent& evt)
@@ -108,6 +137,9 @@ void MainFrame::UseDataFromInputs()
 		days++;
 		production = 4.5 * factories * (1 + f_output) * prod_eff;
 		prod_eff = prod_eff + eff_growth(prod_eff, prod_cap, prod_growth);
+		if (prod_eff > prod_cap) {
+			prod_eff = prod_cap;
+		};
 		produced = produced + (production / cost);
 	} while (produced<requested_f);
 	unsigned long daysTest = 0;
@@ -117,6 +149,9 @@ void MainFrame::UseDataFromInputs()
 		daysTest++;
 		production = 4.5 * factories * (1 + f_output) * prod_eff;
 		//prod_eff = prod_eff + eff_growth(prod_eff, prod_cap, prod_growth);
+		//if (prod_eff > prod_cap) {
+		//	prod_eff = prod_cap;
+		//};
 		produced = produced + (production / cost);
 	} while (produced < requested_f);
 	wxLogStatus("Days : %d. Will show %d in logistics tab", days, daysTest);
